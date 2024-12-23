@@ -14,8 +14,8 @@ const useFilteredProducts = (productos) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get("search") || "";
-    const linea = params.get("line") || "";
-    const grupo = params.get("group_name") || "";
+    const linea = params.get("LINEA") || "";
+    const grupo = params.get("GRUPO") || "";
 
     setSearchTerm(search);
 
@@ -30,7 +30,7 @@ const useFilteredProducts = (productos) => {
 
   // Genera opciones únicas para el filtro de línea basadas en los productos disponibles
   const lineaOptions = useMemo(() => {
-    const uniqueLineas = Array.from(new Set(productos.map(p => p.line || "Sin Línea"))); // Manejar valores faltantes
+    const uniqueLineas = Array.from(new Set(productos.map(p => p.LINEA || "Sin Línea"))); // Manejar valores faltantes
     return uniqueLineas.map(linea => ({
       value: linea,
       label: linea,
@@ -40,8 +40,8 @@ const useFilteredProducts = (productos) => {
   // Genera opciones únicas para el filtro de grupo basadas en la línea seleccionada
   const grupoOptions = useMemo(() => {
     if (selectedLinea) {
-      const filtered = productos.filter(p => p.line === selectedLinea.value);
-      const uniqueGrupos = Array.from(new Set(filtered.map(p => p.group_name || "Sin Grupo"))); // Manejar valores faltantes
+      const filtered = productos.filter(p => p.LINEA === selectedLinea.value);
+      const uniqueGrupos = Array.from(new Set(filtered.map(p => p.GRUPO || "Sin Grupo"))); // Manejar valores faltantes
       return uniqueGrupos.map(grupo => ({
         value: grupo,
         label: grupo,
@@ -55,8 +55,8 @@ const useFilteredProducts = (productos) => {
     return productos.filter(product => {
       const nombre = product.name || ""; // Manejar valores faltantes
       const matchesSearch = nombre.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLinea = selectedLinea ? product.line === selectedLinea.value : true;
-      const matchesGrupo = selectedGrupo ? product.group_name === selectedGrupo.value : true;
+      const matchesLinea = selectedLinea ? product.LINEA === selectedLinea.value : true;
+      const matchesGrupo = selectedGrupo ? product.GRUPO === selectedGrupo.value : true;
       return matchesSearch && matchesLinea && matchesGrupo;
     });
   }, [productos, searchTerm, selectedLinea, selectedGrupo]);

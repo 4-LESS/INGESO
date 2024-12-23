@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.72e63220.css",
-    "main.js": "/static/js/main.fc8758f5.js",
+    "main.js": "/static/js/main.3caf0804.js",
     "static/media/source3.webp": "/static/media/source3.4bbee084425695286fcb.webp",
     "static/media/source2.webp": "/static/media/source2.3db3a4f0c9424569bb9f.webp",
     "static/media/source1.webp": "/static/media/source1.cfe86eaf693862af6d73.webp",
     "static/media/logo_farmahorro.png": "/static/media/logo_farmahorro.00625661c4c1f24caf5b.png",
     "index.html": "/index.html",
     "main.72e63220.css.map": "/static/css/main.72e63220.css.map",
-    "main.fc8758f5.js.map": "/static/js/main.fc8758f5.js.map"
+    "main.3caf0804.js.map": "/static/js/main.3caf0804.js.map"
   },
   "entrypoints": [
     "static/css/main.72e63220.css",
-    "static/js/main.fc8758f5.js"
+    "static/js/main.3caf0804.js"
   ]
 }

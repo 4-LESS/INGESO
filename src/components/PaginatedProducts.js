@@ -20,25 +20,25 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
     <>
       {/* Renderiza una fila de productos con cada producto en su propia tarjeta */}
       <Row>
-        {currentItems.map(({ id, name, stock, price }) => (
+        {currentItems.map(({ id, nombre, stock, precio }) => (
           <Col key={id} sm={12} md={6} lg={4} className="mb-4">
             <Card className="h-100">
               {/* Imagen del producto */}
               <Card.Img 
                 variant="top" 
                 src={"/images/placeholder.jpg"} // Placeholder genérico
-                alt={name} 
+                alt={nombre} 
                 style={{ height: '200px', objectFit: 'cover' }} 
               />
               <Card.Body>
                 {/* Nombre del producto */}
-                <Card.Title>{name}</Card.Title>
+                <Card.Title>{nombre}</Card.Title>
                 {/* Estado de stock, muestra "Agotado" si no hay inventario */}
                 <Card.Text>
                   {stock === 0 ? "Agotado" : `Stock: ${stock}`}
                 </Card.Text>
                 {/* Precio del producto */}
-                <Card.Text>Precio: ${price}</Card.Text>
+                <Card.Text>Precio: ${precio}</Card.Text>
                 {/* Botón para ver más detalles del producto */}
                 <Link to={`/producto/${id}`} className="btn btn-primary">
                   Ver detalles
