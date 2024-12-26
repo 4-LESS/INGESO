@@ -10,7 +10,7 @@ const Estadisticas = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://tu-backend-en-render.com/api/analytics/hourly");
+      const response = await fetch("https://ingeso.onrender.com/api/analytics/hourly");
       if (!response.ok) throw new Error("Error al obtener los datos");
       const data = await response.json();
 
