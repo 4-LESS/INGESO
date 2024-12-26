@@ -75,23 +75,17 @@ const Productos = () => {
                 Resetear Filtros
               </Button>
             </div>
-            {/* Listado de productos paginados */}
             <PaginatedProducts
               productos={filteredProducts}
               currentPage={currentPage}
-              onPageChange={setCurrentPage}              
+              onPageChange={setCurrentPage}
             />
           </Container>
         }
-      />     
-      {/* Ruta para los detalles de un producto */}
+      />
+      {/* Ruta para los detalles del producto */}
       <Route path="/producto/:productId" element={<ProductDetails />} />
     </Routes>
   );
   };        
 export default Productos;
-
-
-
-
-

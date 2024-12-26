@@ -37,10 +37,11 @@ function SearchBar({ onSearchSubmit, defaultValue = "" }) {
           onChange={manejarCambio}
           className="rounded-pill"
         />
+        {/* Ícono de búsqueda dentro del campo */}
         <InputGroup.Text
           className="bg-transparent border-0 search-icon"
-          onClick={() => onSearchSubmit(termino)}
-          style={{ cursor: "pointer" }}
+          onClick={() => onSearchSubmit(termino)} // Activa la búsqueda al hacer clic
+          style={{ cursor: "pointer" }} // Cambia el cursor a pointer para indicar que es clickeable
         >
           <FontAwesomeIcon icon={faSearch} />
         </InputGroup.Text>
@@ -51,8 +52,9 @@ function SearchBar({ onSearchSubmit, defaultValue = "" }) {
 
 // Actualizamos los PropTypes
 SearchBar.propTypes = {
-  onSearchSubmit: PropTypes.func.isRequired,
-  defaultValue: PropTypes.string,
+  onSearch: PropTypes.func.isRequired, // Función llamada en cada cambio de búsqueda (si se usa)
+  onSearchSubmit: PropTypes.func.isRequired, // Función llamada al hacer submit
+  defaultValue: PropTypes.string, // Valor inicial del término de búsqueda
 };
 
 export default SearchBar;

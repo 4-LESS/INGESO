@@ -1,4 +1,8 @@
 // src/App.js
+// Componente principal de la aplicación, que configura el enrutamiento y estructura de la página.
+// Incluye una barra de navegación, contenido principal con rutas, botón para volver al inicio de la página, y el pie de página.
+
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";

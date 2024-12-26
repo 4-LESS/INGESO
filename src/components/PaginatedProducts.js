@@ -1,8 +1,3 @@
-// src/components/PaginatedProducts.js
-
-// Componente para mostrar una lista de productos en una vista paginada.
-// Utiliza react-bootstrap para el diseño y muestra un número específico de productos por página (ITEMS_PER_PAGE).
-
 import React, { useMemo } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -21,23 +16,23 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
   return (
     <>
       <Row>
-        {currentItems.map(({ id, nombre, stock, precio, image }) => (
+        {currentItems.map(({ id, name, stock, price, image}) => (
           <Col key={id} sm={12} md={6} lg={4} className="mb-4">
             <Card className="h-100">
               <Card.Img
                 variant="top"
                 src={image}
-                alt={nombre}
+                alt={name}
                 style={{ height: "200px", objectFit: "cover" }}
               />
               <Card.Body>
-                <Card.Title>{nombre}</Card.Title>
+                <Card.Title>{name}</Card.Title>
                 <Card.Text>
                   {stock === "0" ? "Agotado" : `Stock: ${stock}`}{" "}
                   {stock <= 3 && <span className="pocas-unidades">¡Quedan pocas unidades!</span>}
                 </Card.Text>
                 <Card.Text>
-                  <strong>Precio:</strong> ${precio}
+                  <strong>Precio:</strong> ${price}
                 </Card.Text>
                 <Link to={`/producto/${id}`} className="btn btn-primary">
                   Ver detalles
