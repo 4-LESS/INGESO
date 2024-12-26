@@ -1,63 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
+import React from "react";
 
 const Estadisticas = () => {
-  const [chartData, setChartData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchStatistics = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch("https://ingeso.onrender.com/api/analytics/hourly");
-      if (!response.ok) throw new Error("Error al obtener los datos");
-      const data = await response.json();
-
-      // Formatear datos para Chart.js
-      const labels = data.map((entry) => `${entry.hour}:00`);
-      const sessions = data.map((entry) => entry.sessions);
-
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: "Búsquedas por Hora",
-            data: sessions,
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-          },
-        ],
-      });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStatistics();
-  }, []);
-
   return (
-    <div>
-      {loading ? (
-        <p>Cargando estadísticas...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
-      ) : (
-        chartData && (
-          <Bar
-            data={chartData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { position: "top" },
-              },
-            }}
-          />
-        )
-      )}
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <h2>Estadísticas de Búsquedas</h2>
+      <p>Gráficos en tiempo real sobre las búsquedas realizadas en la página.</p>
+      
+      {/* Incrusta el informe de Google Data Studio */}
+      <iframe
+        title="Estadísticas"
+        width="100%"  // Cambiado a 100% para que sea responsive
+        height="600px" // Altura ajustada para mayor visibilidad
+        src="https://lookerstudio.google.com/reporting/725d70e6-ccc2-4317-a9f8-02c5b1159fac"
+        frameBorder="0"
+        style={{
+          border: "none",
+          borderRadius: "8px", // Esquinas redondeadas
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Sombra para mejor diseño
+        }}
+        allowFullScreen
+      ></iframe>
+      
+      {/* Enlace alternativo para abrir en otra pestaña */}
+      <div style={{ marginTop: "20px" }}>
+        <a
+          href="https://lookerstudio.google.com/reporting/725d70e6-ccc2-4317-a9f8-02c5b1159fac"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: "none",
+            color: "#007BFF",
+            fontWeight: "bold",
+          }}
+        >
+          Abrir Informe en otra pestaña
+        </a>
+      </div>
     </div>
   );
 };
