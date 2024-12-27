@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Componente para estadísticas y reportes
 const Reportes = () => {
-  const [viewStatistics, setViewStatistics] = useState(false);
-
   const handleDownload = () => {
     const canvas = document.querySelector("canvas");
     if (canvas) {
@@ -20,7 +18,7 @@ const Reportes = () => {
     <div className="admin-section">
       <h2>Estadísticas y Reportes</h2>
       <p>Consulta estadísticas de ventas, usuarios y pedidos.</p>
-      <button className="btn-primary" onClick={() => setViewStatistics(true)}>
+      <button className="btn-primary" onClick={() => console.log("Ver Estadísticas")}>
         Ver Estadísticas
       </button>
       <button className="btn-secondary" onClick={handleDownload}>
