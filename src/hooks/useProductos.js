@@ -1,4 +1,8 @@
+// Hook personalizado para cargar datos de productos desde una API.
+// Si un producto no tiene una imagen definida, asigna un placeholder generado dinámicamente.
+
 import { useState, useEffect } from "react";
+import { getPlaceholderImage } from "../utils/helpers";
 
 export const useProductos = () => {
   const [productos, setProductos] = useState([]); // Lista de productos
@@ -18,7 +22,14 @@ export const useProductos = () => {
         }
 
         const data = await response.json(); // Convertir respuesta a JSON
-        setProductos(data); // Actualiza los productos en el estado
+
+        // Agregar imágenes placeholder si no tienen una imagen válida
+        const parsedProductos = data.map((item) => ({
+          ...item,
+          image: item.image || getPlaceholderImage(item.id),
+        }));
+
+        setProductos(parsedProductos); // Actualiza los productos en el estado
       } catch (err) {
         console.error("Error al cargar los productos:", err);
         setError("No se pudieron cargar los productos."); // Guarda el mensaje de error

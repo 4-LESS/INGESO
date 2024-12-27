@@ -1,4 +1,7 @@
 // src/components/Destacados.js
+
+// Crea un componente en la pagina principal donde se muestran medicamentos destacados
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { useProductos } from "../hooks/useProductos";
