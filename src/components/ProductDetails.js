@@ -67,7 +67,7 @@ const ProductDetails = () => {
         <Col md={6} className="text-center">
           <img
             src={product.image || "https://via.placeholder.com/400"}
-            alt={product.name}
+            alt={product.nombre}
             className="img-fluid"
             style={{ maxHeight: "400px", objectFit: "contain" }}
           />
@@ -75,9 +75,9 @@ const ProductDetails = () => {
 
         {/* Detalles del producto */}
         <Col md={6}>
-          <h1 className="mb-3">{product.name}</h1>
+          <h1 className="mb-3">{product.nombre}</h1>
           <h4 className="text-muted">Detalles del producto</h4>
-          <h2 className="text-success mt-3">${product.price}</h2>
+          <h2 className="text-success mt-3">${product.precio}</h2>
           <Badge bg="warning" text="dark" className="mb-4">
             Oferta
           </Badge>

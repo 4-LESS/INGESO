@@ -12,7 +12,7 @@ export const useProductos = () => {
         setError(null); // Reinicia el estado de error
 
         // Llamada a la API del backend
-        const response = await fetch("http://localhost:5000/api/inventory");
+        const response = await fetch("http://localhost:3000/api/inventory");
         if (!response.ok) {
           throw new Error("Error al obtener los datos de la API.");
         }

@@ -13,11 +13,11 @@ cursor = connection.cursor()
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS inventory (
     id INTEGER PRIMARY KEY,       -- Código único del producto
-    name TEXT NOT NULL,           -- Nombre del producto
-    line TEXT,                    -- Línea del producto
-    group_name TEXT,              -- Grupo del producto
+    nombre TEXT NOT NULL,           -- Nombre del producto
+    linea TEXT,                    -- Línea del producto
+    grupo TEXT,              -- Grupo del producto
     stock INTEGER NOT NULL,       -- Cantidad en inventario
-    price REAL NOT NULL           -- Precio del producto
+    precio REAL NOT NULL           -- Precio del producto
 )
 """)
 print("Tabla 'inventory' verificada o creada.")
@@ -34,23 +34,23 @@ try:
                     print(f"Producto omitido: CODIGO vacío en la fila: {row}")
                     continue  # Omitir filas sin un código válido
 
-                name = row["DETALLE"].strip() if row["DETALLE"] else "Sin Nombre"
-                line = row["LINEA"].strip() if row["LINEA"] else "Sin Línea"
-                group_name = row["GRUPO"].strip() if row["GRUPO"] else "Sin Grupo"  # Manejar valores vacíos
+                nombre = row["DETALLE"].strip() if row["DETALLE"] else "Sin Nombre"
+                linea = row["LINEA"].strip() if row["LINEA"] else "Sin Línea"
+                grupo = row["GRUPO"].strip() if row["GRUPO"] else "Sin Grupo"  # Manejar valores vacíos
                 stock = int(row["STOCK"]) if row["STOCK"].strip() else 0  # Asignar 0 si está vacío
-                price = float(row["PRECIO"].replace(",", ".")) if row["PRECIO"].strip() else 0.0  # Asignar 0.0 si está vacío
+                precio = float(row["PRECIO"].replace(".", "")) if row["PRECIO"].strip() else 0.0  # Asignar 0.0 si está vacío
 
                 # Insertar o actualizar en la base de datos
                 cursor.execute("""
-                INSERT INTO inventory (id, name, line, group_name, stock, price)
+                INSERT INTO inventory (id, nombre, linea, grupo, stock, precio)
                 VALUES (?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id) DO UPDATE SET
-                    name=excluded.name,
-                    line=excluded.line,
-                    group_name=excluded.group_name,
+                    nombre=excluded.nombre,
+                    linea=excluded.linea,
+                    grupo=excluded.grupo,
                     stock=excluded.stock,
-                    price=excluded.price
-                """, (id, name, line, group_name, stock, price))
+                    precio=excluded.precio
+                """, (id, nombre, linea, grupo, stock, precio))
             except Exception as e:
                 print(f"Error procesando la fila: {row} - Error: {e}")
 except Exception as e:
