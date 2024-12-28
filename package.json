@@ -54,9 +54,10 @@
     "@wixc3/react-board": "^4.5.3"
   },
 "scripts": {
-  "start-frontend": "react-scripts start",
-  "start-backend": "node Backend/Server.js",
-  "build": "react-scripts build"
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
 },
 "proxy": "http://localhost:5000"
 }
