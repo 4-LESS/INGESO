@@ -29,8 +29,8 @@ const SidebarMenu = ({ activeSection, setActiveSection }) => {
           Anuncios y Notificaciones
         </li>
         <li
-          className={activeSection === "reportes" ? "active" : ""}
-          onClick={() => setActiveSection("reportes")}
+          className={activeSection === "Estadisticas" ? "active" : ""}
+          onClick={() => setActiveSection("Estadisticas")}
         >
           Estadísticas y Reportes
         </li>

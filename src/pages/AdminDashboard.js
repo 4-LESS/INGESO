@@ -5,7 +5,7 @@ import Inventario from "../components/admin/Inventario"; // Gestión de inventar
 import UserManagement from "../components/admin/UserManagement"; // Gestión de usuarios
 import OrderManagement from "../components/admin/OrderManagement"; // Gestión de pedidos
 import AdminAnuncios from "../components/admin/AdminAnuncios"; // Gestión de anuncios
-import Reportes from "../components/admin/Reportes"; // Reportes y estadísticas
+import Estadisticas from "../components/admin/Estadisticas"; //Gestión de las estadísticas y los reportes
 
 import "../styles/AdminDashboard.scss"; // Archivo de estilos
 
@@ -23,8 +23,8 @@ const AdminDashboard = () => {
         return <OrderManagement />;
       case "adminanuncios":
         return <AdminAnuncios />;
-      case "reportes":
-        return <Reportes />;
+      case "Estadisticas":
+        return <Estadisticas />;
       default:
         return null;
     }
