@@ -27,6 +27,7 @@
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.2",
+    "react-transition-group": "^4.4.5",
     "sass": "^1.80.6",
     "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4"
@@ -53,11 +54,11 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@wixc3/react-board": "^4.5.3"
   },
-"scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject"
-},
-"proxy": "http://localhost:5000"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:5000"
 }

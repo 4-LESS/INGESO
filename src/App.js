@@ -1,9 +1,4 @@
-// src/App.js
-// Componente principal de la aplicación, que configura el enrutamiento y estructura de la página.
-// Incluye una barra de navegación, contenido principal con rutas, botón para volver al inicio de la página, y el pie de página.
-
-
-import React from "react";
+import React, { useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { CarritoProvider } from "./components/CarritoContext"; 
@@ -27,6 +22,9 @@ function AnimatedRoutes() {
   const [isAdmin, setIsAdmin] = React.useState(false);
   const location = useLocation();
 
+  // Crear un ref para la transición
+  const nodeRef = useRef(null);
+
   React.useEffect(() => {
     const fetchRoles = async () => {
       if (isAuthenticated) {
@@ -40,19 +38,26 @@ function AnimatedRoutes() {
 
   return (
     <TransitionGroup>
-      <CSSTransition key={location.pathname} timeout={300} classNames="slide">
-        <Routes location={location}>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/productos/*" element={<Productos />} />
-          <Route path="/producto/:productId" element={<ProductDetails />} />
-          <Route path="/sobre-nosotros" element={<SobreNosotros />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/farmacia1" element={<Farmacia1 />} />
-          <Route path="/farmacia2" element={<Farmacia2 />} />
-          <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
-          <Route path="/user-dashboard" element={isAuthenticated ? <ClientDashboard /> : <Navigate to="/" />} />
-        </Routes>
+      <CSSTransition
+        key={location.pathname}
+        timeout={300}
+        classNames="slide"
+        nodeRef={nodeRef} // Pasar el ref aquí
+      >
+        <div ref={nodeRef}>
+          <Routes location={location}>
+            <Route path="/" element={<Inicio />} />
+            <Route path="/productos/*" element={<Productos />} />
+            <Route path="/producto/:productId" element={<ProductDetails />} />
+            <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+            <Route path="/contacto" element={<Contacto />} />
+            <Route path="/carrito" element={<Carrito />} />
+            <Route path="/farmacia1" element={<Farmacia1 />} />
+            <Route path="/farmacia2" element={<Farmacia2 />} />
+            <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
+            <Route path="/user-dashboard" element={isAuthenticated ? <ClientDashboard /> : <Navigate to="/" />} />
+          </Routes>
+        </div>
       </CSSTransition>
     </TransitionGroup>
   );

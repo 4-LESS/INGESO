@@ -1,8 +1,7 @@
 // src/components/SearchBar.js
 
 // Componente de barra de búsqueda que permite a los usuarios buscar productos.
-// Incluye un ícono de búsqueda y envía el término de búsqueda al hacer submit o cambiar el valor.
-// Utiliza react-bootstrap para el diseño del campo de búsqueda e ícono.
+// Incluye un ícono de búsqueda y envía el término de búsqueda al hacer submit o clic en el ícono.
 
 import React, { useState, useEffect } from "react";
 import { Form, InputGroup, FormControl } from "react-bootstrap";
@@ -34,14 +33,14 @@ function SearchBar({ onSearchSubmit, defaultValue = "" }) {
           placeholder="Buscar productos..."
           aria-label="Buscar"
           value={termino}
-          onChange={manejarCambio}
+          onChange={manejarCambio} // Cambios en el campo de búsqueda
           className="rounded-pill"
         />
-        {/* Ícono de búsqueda dentro del campo */}
+        {/* Ícono de búsqueda que activa la búsqueda al hacer clic */}
         <InputGroup.Text
           className="bg-transparent border-0 search-icon"
-          onClick={() => onSearchSubmit(termino)} // Activa la búsqueda al hacer clic
-          style={{ cursor: "pointer" }} // Cambia el cursor a pointer para indicar que es clickeable
+          onClick={() => onSearchSubmit(termino)}
+          style={{ cursor: "pointer" }}
         >
           <FontAwesomeIcon icon={faSearch} />
         </InputGroup.Text>
@@ -50,11 +49,10 @@ function SearchBar({ onSearchSubmit, defaultValue = "" }) {
   );
 }
 
-// Actualizamos los PropTypes
+// PropTypes actualizados
 SearchBar.propTypes = {
-  onSearch: PropTypes.func.isRequired, // Función llamada en cada cambio de búsqueda (si se usa)
-  onSearchSubmit: PropTypes.func.isRequired, // Función llamada al hacer submit
-  defaultValue: PropTypes.string, // Valor inicial del término de búsqueda
+  onSearchSubmit: PropTypes.func.isRequired, // Función llamada al hacer submit o clic en el ícono
+  defaultValue: PropTypes.string,           // Valor inicial del término de búsqueda
 };
 
 export default SearchBar;

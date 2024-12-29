@@ -139,12 +139,14 @@ function Inicio() {
         </Row>
       </Container>
 
-      <style jsx>{`
-        .feature-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-      `}</style>
+      <style>
+        {`
+          .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+          }
+        `}
+      </style>
     </>
   );
 }

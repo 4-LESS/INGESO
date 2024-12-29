@@ -59,7 +59,7 @@ const Productos = () => {
           <Container className="my-4">
             <h1 className="mb-4">Productos</h1>
             {/* Barra de búsqueda */}
-            <SearchBar onSearch={handleSearchSubmit} defaultValue={searchTerm} />
+            <SearchBar onSearchSubmit={handleSearchSubmit} defaultValue={searchTerm} />
             {/* Filtros de producto */}
             <ProductFilters
               lineaOptions={lineaOptions}
