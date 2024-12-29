@@ -12,12 +12,12 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (!isLoading && productos.length > 0) {
-      // Busca el producto por su ID
-      const foundProduct = productos.find((item) => item.id === Number(productId));
+      // Busca el producto por su ID (usando cadenas para consistencia)
+      const foundProduct = productos.find((item) => item.id === productId);
       if (foundProduct) {
         setProduct(foundProduct);
       } else {
-        console.error("Producto no encontrado");
+        console.error(`Producto con ID ${productId} no encontrado`);
       }
     }
   }, [isLoading, productos, productId]);
@@ -49,6 +49,7 @@ const ProductDetails = () => {
       </Container>
     );
   }
+
   // Maneja la acción de agregar a la bolsa
   const handleAgregarBolsa = () => {
     agregarAlCarrito(product);
@@ -67,7 +68,7 @@ const ProductDetails = () => {
         <Col md={6} className="text-center">
           <img
             src={product.image || "https://via.placeholder.com/400"}
-            alt={product.nombre}
+            alt={product.nombre || "Producto sin nombre"}
             className="img-fluid"
             style={{ maxHeight: "400px", objectFit: "contain" }}
           />
@@ -75,24 +76,26 @@ const ProductDetails = () => {
 
         {/* Detalles del producto */}
         <Col md={6}>
-          <h1 className="mb-3">{product.nombre}</h1>
+          <h1 className="mb-3">{product.nombre || "Producto desconocido"}</h1>
           <h4 className="text-muted">Detalles del producto</h4>
-          <h2 className="text-success mt-3">${product.precio}</h2>
-          <Badge bg="warning" text="dark" className="mb-4">
-            Oferta
-          </Badge>
+          <h2 className="text-success mt-3">
+            ${product.precio ? product.precio : "Precio no disponible"}
+          </h2>
+          {product.stock && product.stock <= 3 && (
+            <Badge bg="warning" text="dark" className="mb-4">
+              ¡Quedan pocas unidades!
+            </Badge>
+          )}
 
-           {/* Mostrar stock y alerta si es bajo */}
-           <p>
-            <strong>Stock:</strong> {product.stock}{" "}
-            {product.stock <= 3 && (
-              <span className="pocas-unidades">¡Quedan pocas unidades!</span>
-            )}
-           </p>
+          {/* Mostrar stock */}
+          <p>
+            <strong>Stock:</strong>{" "}
+            {product.stock ? `${product.stock}` : "No disponible"}
+          </p>
 
           {/* Opciones de compra */}
           <div className="my-4">
-          <Button
+            <Button
               variant="success"
               size="lg"
               className="me-2"
@@ -100,7 +103,11 @@ const ProductDetails = () => {
             >
               Agregar a la bolsa
             </Button>
-            <Button variant="outline-secondary" size="lg" onClick={handleComprarAhora}>
+            <Button
+              variant="outline-secondary"
+              size="lg"
+              onClick={handleComprarAhora}
+            >
               Comprar ahora
             </Button>
           </div>
