@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useProductos } from "../hooks/useProductos"; // Importa el hook para cargar los productos
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useProductos } from "../hooks/useProductos"; // Hook para cargar los productos
 import { useCarrito } from "../components/CarritoContext"; // Contexto del carrito
 import { Container, Row, Col, Button, Badge, Spinner } from "react-bootstrap";
 
 const ProductDetails = () => {
   const { productId } = useParams(); // Obtiene el ID del producto desde la URL
-  const { productos, isLoading, error } = useProductos(); // Usa el hook para cargar los productos
+  const { productos, isLoading, error } = useProductos(); // Hook para cargar los productos
   const [product, setProduct] = useState(null); // Estado para el producto actual
   const { agregarAlCarrito } = useCarrito(); // Función para agregar al carrito
+  const navigate = useNavigate(); // Hook para redirigir sin recargar la página
 
   useEffect(() => {
+    // Carga el producto específico basado en el ID
     if (!isLoading && productos.length > 0) {
-      // Busca el producto por su ID (usando cadenas para consistencia)
+      //Busca el producto por su ID
       const foundProduct = productos.find((item) => item.id === productId);
       if (foundProduct) {
         setProduct(foundProduct);
@@ -57,8 +59,8 @@ const ProductDetails = () => {
 
   // Maneja la acción de "comprar ahora" y redirige al carrito
   const handleComprarAhora = () => {
-    agregarAlCarrito(product);
-    window.location.href = "/carrito";
+    agregarAlCarrito(product); // Agrega el producto al carrito
+    navigate("/carrito"); // Redirige al carrito
   };
 
   return (
@@ -87,11 +89,10 @@ const ProductDetails = () => {
             </Badge>
           )}
 
-          {/* Mostrar stock */}
-          <p>
-            <strong>Stock:</strong>{" "}
-            {product.stock ? `${product.stock}` : "No disponible"}
-          </p>
+          {/* Mostrar alerta si el stock es bajo */}
+          {product.stock <= 3 && (
+            <p className="pocas-unidades">¡Quedan pocas unidades!</p>
+          )}
 
           {/* Opciones de compra */}
           <div className="my-4">

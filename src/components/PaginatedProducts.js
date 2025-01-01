@@ -28,8 +28,7 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
               <Card.Body>
                 <Card.Title>{nombre}</Card.Title>
                 <Card.Text>
-                  {stock === "0" ? "Agotado" : `Stock: ${stock}`}{" "}
-                  {stock <= 3 && <span className="pocas-unidades">¡Quedan pocas unidades!</span>}
+                {stock === "0" ? "Agotado" : stock <= 3 ? <span className="pocas-unidades">¡Quedan pocas unidades!</span> : "Disponible"}
                 </Card.Text>
                 <Card.Text>
                   <strong>Precio:</strong> ${precio}
