@@ -1,23 +1,47 @@
 // src/components/Anuncios.js
 
-import React from 'react';
-import { Carousel } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Carousel, Spinner } from 'react-bootstrap';
 
 function Anuncios() {
-  const novedades = [
-    {
-      src: require('../assets/images/source1.webp'),
-      alt: 'Novedad 1',
-    },
-    {
-      src: require('../assets/images/source2.webp'),
-      alt: 'Novedad 2',
-    },
-    {
-      src: require('../assets/images/source3.webp'),
-      alt: 'Novedad 3',
-    },
-  ];
+  const [novedades, setNovedades] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch de las imágenes desde el bucket
+    const fetchNovedades = async () => {
+      try {
+        const response = await fetch('https://anuncios-farmaahorro.s3.us-east-2.amazonaws.com/anuncios.json');
+        if (!response.ok) throw new Error('No se pudieron cargar los anuncios');
+        const data = await response.json();
+        setNovedades(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNovedades();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <p className="mt-3">Cargando anuncios...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center my-5">
+        <p className="text-danger">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -37,7 +61,6 @@ function Anuncios() {
         {novedades.map((item, index) => (
           <Carousel.Item key={index}>
             <div style={{ position: 'relative' }}>
-              {/* Imagen */}
               <img
                 className="d-block w-100"
                 src={item.src}
@@ -50,7 +73,6 @@ function Anuncios() {
                   display: 'block'
                 }}
               />
-              {/* Overlay degradado sutil en la parte inferior */}
               <div 
                 style={{
                   position: 'absolute',
