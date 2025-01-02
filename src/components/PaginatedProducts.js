@@ -1,7 +1,10 @@
-import React, { useMemo } from "react";
+// src/components/PaginatedProducts.js
+
+import React, { useMemo, useEffect, useState } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PaginationComponent from "./PaginationComponent";
+import { getProductImage } from "../utils/helpers";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -13,22 +16,52 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
     return productos.slice(start, start + ITEMS_PER_PAGE);
   }, [productos, currentPage]);
 
+  const [imageUrls, setImageUrls] = useState({});
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const cachedUrls = JSON.parse(localStorage.getItem("imageUrls") || "{}");
+      const urls = { ...cachedUrls };
+
+      await Promise.all(
+        currentItems.map(async (item) => {
+          if (!urls[item.id]) {
+            const url = await getProductImage(item.id);
+            urls[item.id] = url;
+          }
+        })
+      );
+
+      setImageUrls(urls);
+      localStorage.setItem("imageUrls", JSON.stringify(urls));
+    };
+
+    if (currentItems.length > 0) {
+      fetchImages();
+    }
+  }, [currentItems]);
+
   return (
     <>
       <Row>
-        {currentItems.map(({ id, nombre, stock, precio, image}) => (
+        {currentItems.map(({ id, nombre, stock, precio }) => (
           <Col key={id} sm={12} md={6} lg={4} className="mb-4">
             <Card className="h-100">
               <Card.Img
                 variant="top"
-                src={image}
+                src={imageUrls[id] || "https://via.placeholder.com/300x300"}
+                loading="lazy" // Lazy Loading
                 alt={nombre}
-                style={{ height: "200px", objectFit: "cover" }}
+                style={{
+                  objectFit: "cover",
+                  height: "300px",
+                  width: "100%",
+                }}
               />
               <Card.Body>
                 <Card.Title>{nombre}</Card.Title>
                 <Card.Text>
-                {stock === "0" ? "Agotado" : stock <= 3 ? <span className="pocas-unidades">¡Quedan pocas unidades!</span> : "Disponible"}
+                  {stock === "0" ? "Agotado" : stock <= 3 ? "¡Quedan pocas unidades!" : "Disponible"}
                 </Card.Text>
                 <Card.Text>
                   <strong>Precio:</strong> ${precio}

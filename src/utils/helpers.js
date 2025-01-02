@@ -1,7 +1,9 @@
 // src/utils/helpers.js
 
-// Función para generar una URL de imagen placeholder única basada en el ID del producto
-export const getPlaceholderImage = (id) => {
-    return `https://picsum.photos/seed/${id}/300/200`;
-  };
-  
+export const getProductImage = async (id) => {
+    const awsImageUrl = `https://imagenes-productos-farmahorro.s3.us-east-2.amazonaws.com/${id}.webp`;
+
+    return awsImageUrl
+};
+
+

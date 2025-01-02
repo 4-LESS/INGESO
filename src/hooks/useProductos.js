@@ -49,7 +49,7 @@ export const useProductos = () => {
 
 import { useState, useEffect, useCallback } from "react";
 import Papa from "papaparse";
-import { getPlaceholderImage } from "../utils/helpers";
+import { getProductImage } from "../utils/helpers";
 
 export const useProductos = () => {
   const [productos, setProductos] = useState([]); // Estado para almacenar los productos cargados
@@ -82,7 +82,7 @@ export const useProductos = () => {
               precio: item.PRECIO,
               LINEA: item.LINEA || "Sin LINEA",
               GRUPO: item.GRUPO || "Sin GRUPO",
-              image: getPlaceholderImage(item.CODIGO || Math.random().toString(36).substr(2, 9)), // Asigna una imagen placeholder
+              image: getProductImage(item.CODIGO || Math.random().toString(36).substr(2, 9)), // Asigna una imagen placeholder
             }));
           setProductos(parsedProductos); // Actualiza el estado con los productos analizados
           setIsLoading(false); // Indica que la carga ha terminado
