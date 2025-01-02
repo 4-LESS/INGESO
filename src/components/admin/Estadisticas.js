@@ -1,17 +1,17 @@
 import React from "react";
 
 const Estadisticas = () => {
-  const handleDownload = () => {
-    const canvas = document.querySelector("canvas");
-    if (canvas) {
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = "estadisticas.png";
-      link.click();
-    } else {
-      alert("No hay gráficos para descargar.");
-    }
-  };
+//  const handleDownload = () => {
+//    const canvas = document.querySelector("canvas");
+//    if (canvas) {
+//      const link = document.createElement("a");
+//      link.href = canvas.toDataURL("image/png");
+//      link.download = "estadisticas.png";
+//      link.click();
+//    } else {
+//      alert("No hay gráficos para descargar.");
+//    }
+//  };
 
   return (
     <div className="admin-section" style={{ textAlign: "center", padding: "20px" }}>
