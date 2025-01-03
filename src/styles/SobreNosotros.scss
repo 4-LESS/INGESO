@@ -1,0 +1,51 @@
+// src/styles/SobreNosotros.scss
+
+.sobre-nosotros {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+  
+    h1, h2 {
+      color: #004d99;
+      font-weight: bold;
+    }
+  
+    p.lead {
+      font-size: 1.25rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+  
+    ul {
+      list-style: square inside;
+      margin-left: 1rem;
+  
+      li {
+        margin-bottom: 0.5rem;
+        color: #005b96;
+      }
+    }
+  
+    .sucursal {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+      &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+  
+      .card-title {
+        color: #004d99;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+  
+      .card-text {
+        color: #555;
+        line-height: 1.5;
+      }
+    }
+  }
+  

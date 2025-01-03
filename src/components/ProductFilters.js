@@ -1,46 +1,92 @@
 // src/components/ProductFilters.js
 
-// Componente de filtros de productos que permite seleccionar opciones de Línea y Grupo para filtrar los productos mostrados.
-// Utiliza react-select para los menús desplegables y react-bootstrap para la disposición del diseño.
-
 import React from "react";
 import Select from "react-select";
 import { Row, Col, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 const ProductFilters = ({
-  lineaOptions, // Opciones disponibles para el filtro de Línea
-  grupoOptions, // Opciones disponibles para el filtro de Grupo, depende de la línea seleccionada
-  selectedLinea, // Valor seleccionado para Línea
-  selectedGrupo, // Valor seleccionado para Grupo
-  onLineaChange, // Función para manejar el cambio de selección en Línea
-  onGrupoChange, // Función para manejar el cambio de selección en Grupo
+  categoriaOptions,
+  subcategoriaOptions,
+  subSubcategoriaOptions,
+  selectedCategoria,
+  selectedSubcategoria,
+  selectedSubSubcategoria,
+  onCategoriaChange,
+  onSubcategoriaChange,
+  onSubSubcategoriaChange,
 }) => {
+  // Logs para depurar
+  console.log("[ProductFilters] Render");
+  console.log("  categoríaOptions:", categoriaOptions);
+  console.log("  subcategoriaOptions:", subcategoriaOptions);
+  console.log("  subSubcategoriaOptions:", subSubcategoriaOptions);
+  console.log("  selectedCategoria:", selectedCategoria);
+  console.log("  selectedSubcategoria:", selectedSubcategoria);
+  console.log("  selectedSubSubcategoria:", selectedSubSubcategoria);
+
   return (
     <Row className="mb-4">
-      {/* Selector para Línea de productos */}
-      <Col md={6} className="mb-2">
-        <Form.Label><strong>Filtrar por Línea</strong></Form.Label>
+      {/* Selector de Categoría */}
+      <Col md={4} className="mb-2">
+        <Form.Label>
+          <strong>Filtrar por Categoría</strong>
+        </Form.Label>
         <Select
-          options={lineaOptions} // Lista de opciones para Línea
-          value={selectedLinea} // Valor actualmente seleccionado
-          onChange={onLineaChange} // Callback para manejar el cambio de selección
-          isClearable // Permite limpiar la selección actual
-          placeholder="Selecciona una Línea..." // Placeholder mostrado cuando no hay selección
+          options={categoriaOptions}
+          value={selectedCategoria}
+          onChange={(selected) => {
+            console.log("[ProductFilters] Cambio en Categoría:", selected);
+            onCategoriaChange(selected);
+          }}
+          isClearable
+          placeholder="Selecciona una Categoría..."
           className="basic-select"
         />
       </Col>
-      
-      {/* Selector para Grupo de productos, depende de Línea */}
-      <Col md={6} className="mb-2">
-        <Form.Label><strong>Filtrar por Grupo</strong></Form.Label>
+
+      {/* Selector de Subcategoría */}
+      <Col md={4} className="mb-2">
+        <Form.Label>
+          <strong>Filtrar por Subcategoría</strong>
+        </Form.Label>
         <Select
-          options={grupoOptions} // Lista de opciones para Grupo, filtrada por Línea seleccionada
-          value={selectedGrupo} // Valor actualmente seleccionado
-          onChange={onGrupoChange} // Callback para manejar el cambio de selección
-          isClearable // Permite limpiar la selección actual
-          isDisabled={!selectedLinea} // Deshabilita si no se ha seleccionado una Línea
-          placeholder={selectedLinea ? "Selecciona un Grupo..." : "Selecciona una Línea primero"} // Placeholder contextual
+          options={subcategoriaOptions}
+          value={selectedSubcategoria}
+          onChange={(selected) => {
+            console.log("[ProductFilters] Cambio en Subcategoría:", selected);
+            onSubcategoriaChange(selected);
+          }}
+          isClearable
+          isDisabled={!selectedCategoria}
+          placeholder={
+            selectedCategoria
+              ? "Selecciona una Subcategoría..."
+              : "Selecciona una Categoría primero"
+          }
+          className="basic-select"
+        />
+      </Col>
+
+      {/* Selector de Sub-subcategoría */}
+      <Col md={4} className="mb-2">
+        <Form.Label>
+          <strong>Filtrar por Detalle</strong>
+        </Form.Label>
+        <Select
+          options={subSubcategoriaOptions}
+          value={selectedSubSubcategoria}
+          onChange={(selected) => {
+            console.log("[ProductFilters] Cambio en Sub-subcategoría:", selected);
+            onSubSubcategoriaChange(selected);
+          }}
+          isClearable
+          isDisabled={!selectedSubcategoria}
+          placeholder={
+            selectedSubcategoria
+              ? "Selecciona un Detalle..."
+              : "Selecciona una Subcategoría primero"
+          }
           className="basic-select"
         />
       </Col>
@@ -48,14 +94,18 @@ const ProductFilters = ({
   );
 };
 
-// Validación de tipos de props para asegurar el uso correcto del componente
 ProductFilters.propTypes = {
-  lineaOptions: PropTypes.array.isRequired, // Array de opciones para Línea
-  grupoOptions: PropTypes.array.isRequired, // Array de opciones para Grupo
-  selectedLinea: PropTypes.object, // Objeto seleccionado para Línea, puede ser null
-  selectedGrupo: PropTypes.object, // Objeto seleccionado para Grupo, puede ser null
-  onLineaChange: PropTypes.func.isRequired, // Función para actualizar la selección de Línea
-  onGrupoChange: PropTypes.func.isRequired, // Función para actualizar la selección de Grupo
+  categoriaOptions: PropTypes.array.isRequired,
+  subcategoriaOptions: PropTypes.array.isRequired,
+  subSubcategoriaOptions: PropTypes.array.isRequired,
+  selectedCategoria: PropTypes.object,
+  selectedSubcategoria: PropTypes.object,
+  selectedSubSubcategoria: PropTypes.object,
+  onCategoriaChange: PropTypes.func.isRequired,
+  onSubcategoriaChange: PropTypes.func.isRequired,
+  onSubSubcategoriaChange: PropTypes.func.isRequired,
 };
 
 export default ProductFilters;
+
+

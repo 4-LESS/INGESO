@@ -7,10 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faBars } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../components/SearchBar";
 import ModalSucursales from './ModalSucursales';
-import CarritoIcon from "./CarritoIcon"; 
-import UserMenu from "./UserMenu"; // Importa el nuevo componente
+import CarritoIcon from "./CarritoIcon";
+import UserMenu from "./UserMenu";
+import DropdownMenu from "./DropDownMenu"; // Importa el menú dinámico
 import { CSSTransition } from "react-transition-group";
-import "../styles/SharedMenuStyles.scss"; // Estilos compartidos
+import "../styles/SharedMenuStyles.scss";
 
 function NavigationBar() {
   const [showSucursales, setShowSucursales] = useState(false);
@@ -78,19 +79,7 @@ function NavigationBar() {
                 unmountOnExit
               >
                 <div className="navigation-dropdown">
-                  <div className="dropdown-item" onClick={toggleMenu}>
-                    <Link to="/productos">Productos</Link>
-                  </div>
-                  <div className="dropdown-divider" />
-                  <div className="dropdown-item" onClick={toggleMenu}>
-                    <Link to="/productos?categoria=cosmetica">Cosmética</Link>
-                  </div>
-                  <div className="dropdown-item" onClick={toggleMenu}>
-                    <Link to="/productos?categoria=bebe">Cuidado de bebé</Link>
-                  </div>
-                  <div className="dropdown-item" onClick={toggleMenu}>
-                    <Link to="/productos?categoria=medicamentos">Medicamentos</Link>
-                  </div>
+                  <DropdownMenu /> {/* Inserta el menú dinámico aquí */}
                 </div>
               </CSSTransition>
             </div>
@@ -130,3 +119,4 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+

@@ -1,126 +1,220 @@
 import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { categoryMapping } from "../utils/categoryMapping";
 
 const useFilteredProducts = (productos) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Estados para almacenar los valores de los filtros
-  const [searchTerm, setSearchTerm] = useState(""); // Almacena el término de búsqueda
-  const [selectedLinea, setSelectedLinea] = useState(null); // Almacena la línea seleccionada
-  const [selectedGrupo, setSelectedGrupo] = useState(null); // Almacena el grupo seleccionado
+  // Estados de filtros
+  const [searchTerm, setSearchTerm] = useState(""); // término de búsqueda
+  const [selectedCategoria, setSelectedCategoria] = useState(null); // Categoría (nivel 1)
+  const [selectedSubcategoria, setSelectedSubcategoria] = useState(null); // (nivel 2)
+  const [selectedSubSubcategoria, setSelectedSubSubcategoria] = useState(null); // (nivel 3)
 
-  // Inicializa los filtros basados en los parámetros de URL al montar el hook
+  // Función para normalizar strings (elimina mayúsculas, acentos, etc.)
+  const normalize = (str = "") =>
+    (str || "")
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/[\u0300-\u036f]/g, "");
+
+  // Leer parámetros de URL al montar y cuando cambie la ruta
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get("search") || "";
-    const linea = params.get("linea") || "";
-    const grupo = params.get("grupo") || "";
+    const categoria = params.get("categoria") || "";
+    const subcategoria = params.get("subcategoria") || "";
+    const subSubcategoria = params.get("subsubcategoria") || "";
 
     setSearchTerm(search);
 
-    if (linea) {
-      setSelectedLinea({ value: linea, label: linea });
+    // Actualizar estados según los parámetros
+    if (categoria) {
+      setSelectedCategoria({ value: categoria, label: categoria });
+    } else {
+      setSelectedCategoria(null);
     }
 
-    if (grupo) {
-      setSelectedGrupo({ value: grupo, label: grupo });
+    if (subcategoria) {
+      setSelectedSubcategoria({ value: subcategoria, label: subcategoria });
+    } else {
+      setSelectedSubcategoria(null);
+    }
+
+    if (subSubcategoria) {
+      setSelectedSubSubcategoria({ value: subSubcategoria, label: subSubcategoria });
+    } else {
+      setSelectedSubSubcategoria(null);
     }
   }, [location.search]);
 
-  // Genera opciones únicas para el filtro de línea basadas en los productos disponibles
-  const lineaOptions = useMemo(() => {
-    const uniqueLineas = Array.from(new Set(productos.map(p => p.linea || "Sin Línea"))); // Manejar valores faltantes
-    return uniqueLineas.map(linea => ({
-      value: linea,
-      label: linea,
+  // Genera las opciones del primer select (categorías) desde categoryMapping
+  const categoriaOptions = useMemo(() => {
+    console.log("Generando opciones de categorías...");
+    const options = Object.keys(categoryMapping).map((cat) => ({
+      value: cat,
+      label: cat,
     }));
-  }, [productos]);
+    console.log("Opciones de Categorías:", options);
+    return options;
+  }, []);
 
-  // Genera opciones únicas para el filtro de grupo basadas en la línea seleccionada
-  const grupoOptions = useMemo(() => {
-    if (selectedLinea) {
-      const filtered = productos.filter(p => p.linea === selectedLinea.value);
-      const uniqueGrupos = Array.from(new Set(filtered.map(p => p.grupo || "Sin Grupo"))); // Manejar valores faltantes
-      return uniqueGrupos.map(grupo => ({
-        value: grupo,
-        label: grupo,
-      }));
+  // Genera opciones de subcategoría al seleccionar la categoría
+  const subcategoriaOptions = useMemo(() => {
+    if (!selectedCategoria) {
+      console.log("Sin categoría seleccionada.");
+      return [];
     }
-    return [];
-  }, [selectedLinea, productos]);
+    const catKey = selectedCategoria.value;
+    const subcatsObj = categoryMapping[catKey]?.subcategories || {};
+    console.log("Subcategorías para", catKey, subcatsObj);
 
-  // Filtra los productos en base al término de búsqueda, línea y grupo seleccionados
+    const options = Object.keys(subcatsObj).map((subcat) => ({
+      value: subcat,
+      label: subcat,
+    }));
+    console.log("Opciones de Subcategorías:", options);
+    return options;
+  }, [selectedCategoria]);
+
+  // Genera opciones de sub-subcategoría al seleccionar la subcategoría
+  const subSubcategoriaOptions = useMemo(() => {
+    if (!selectedSubcategoria || !selectedCategoria) {
+      console.log("Sin subcategoría seleccionada o categoría seleccionada.");
+      return [];
+    }
+    const catKey = selectedCategoria.value;
+    const subcatKey = selectedSubcategoria.value;
+    const subsubObj =
+      categoryMapping[catKey]?.subcategories[subcatKey]?.subcategories || {};
+
+    console.log("Sub-subcategorías para", subcatKey, subsubObj);
+
+    const options = Object.keys(subsubObj).map((subsub) => ({
+      value: subsub,
+      label: subsub,
+    }));
+    console.log("Opciones de Sub-subcategorías:", options);
+    return options;
+  }, [selectedCategoria, selectedSubcategoria]);
+
+  // Filtra los productos
   const filteredProducts = useMemo(() => {
-    return productos.filter(product => {
-      const nombre = product.nombre || ""; // Manejar valores faltantes
-      const matchesSearch = nombre.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLinea = selectedLinea ? product.linea === selectedLinea.value : true;
-      const matchesGrupo = selectedGrupo ? product.grupo === selectedGrupo.value : true;
-      return matchesSearch && matchesLinea && matchesGrupo;
+    console.log("=== Verificando coincidencias ===");
+    const filtered = productos.filter((product) => {
+      console.log(
+        "producto:",
+        product.nombre,
+        "| categoria:",
+        product.categoria,
+        "| subcategoria:",
+        product.subcategoria,
+        "| subsubcategoria:",
+        product.subsubcategoria
+      );
+
+      const matchesSearch = normalize(product.nombre).includes(
+        normalize(searchTerm)
+      );
+
+      const matchCat = selectedCategoria
+        ? normalize(product.categoria) === normalize(selectedCategoria.value)
+        : true;
+
+      const matchSub = selectedSubcategoria
+        ? normalize(product.subcategoria) === normalize(selectedSubcategoria.value)
+        : true;
+
+      const matchSubSub = selectedSubSubcategoria
+        ? normalize(product.subsubcategoria) === normalize(selectedSubSubcategoria.value)
+        : true;
+
+      const matched = matchesSearch && matchCat && matchSub && matchSubSub;
+      console.log("¿Pasa el filtro?", matched);
+      return matched;
     });
-  }, [productos, searchTerm, selectedLinea, selectedGrupo]);
 
-  // Actualiza el término de búsqueda y la URL
-  const handleSearchSubmit = (term) => {
-    setSearchTerm(term);
-    const params = new URLSearchParams(location.search);
-    if (term) {
-      params.set("search", term);
-    } else {
-      params.delete("search");
-    }
-    navigate(`/productos?${params.toString()}`);
-  };
+    console.log("Productos filtrados:", filtered);
+    return filtered;
+  }, [productos, searchTerm, selectedCategoria, selectedSubcategoria, selectedSubSubcategoria]);
 
-  // Actualiza la línea seleccionada y resetea el grupo si es necesario
-  const handleLineaChange = (selected) => {
-    setSelectedLinea(selected);
-    setSelectedGrupo(null); // Restablece el grupo al cambiar la línea
+  // Manejadores para actualizar estado + URL
+  const handleCategoriaChange = (selected) => {
+    console.log("Seleccionada Categoría:", selected);
+    setSelectedCategoria(selected);
+    setSelectedSubcategoria(null);
+    setSelectedSubSubcategoria(null);
 
     const params = new URLSearchParams(location.search);
     if (selected) {
-      params.set("linea", selected.value);
+      params.set("categoria", selected.value);
     } else {
-      params.delete("linea");
+      params.delete("categoria");
     }
-    params.delete("grupo"); // Elimina siempre el grupo al cambiar la línea
+    params.delete("subcategoria");
+    params.delete("subsubcategoria");
     navigate(`/productos?${params.toString()}`);
   };
 
-  // Actualiza el grupo seleccionado y la URL
-  const handleGrupoChange = (selected) => {
-    setSelectedGrupo(selected);
+  const handleSubcategoriaChange = (selected) => {
+    console.log("Cambio de Subcategoría, seleccionado:", selected);
+    setSelectedSubcategoria(selected);
+    setSelectedSubSubcategoria(null);
+
     const params = new URLSearchParams(location.search);
     if (selected) {
-      params.set("grupo", selected.value);
+      params.set("subcategoria", selected.value);
     } else {
-      params.delete("grupo");
+      params.delete("subcategoria");
+    }
+    params.delete("subsubcategoria");
+    navigate(`/productos?${params.toString()}`);
+  };
+
+  const handleSubSubcategoriaChange = (selected) => {
+    console.log("Seleccionada Sub-subcategoría:", selected);
+    setSelectedSubSubcategoria(selected);
+
+    const params = new URLSearchParams(location.search);
+    if (selected) {
+      params.set("subsubcategoria", selected.value);
+    } else {
+      params.delete("subsubcategoria");
     }
     navigate(`/productos?${params.toString()}`);
   };
 
-  // Restablece todos los filtros y actualiza la URL
   const resetFilters = () => {
+    console.log("Restableciendo filtros...");
     setSearchTerm("");
-    setSelectedLinea(null);
-    setSelectedGrupo(null);
-    navigate(`/productos`);
+    setSelectedCategoria(null);
+    setSelectedSubcategoria(null);
+    setSelectedSubSubcategoria(null);
+    navigate("/productos");
   };
 
-  // Retorna los productos filtrados, opciones de filtro y handlers para cambiar los filtros
   return {
     filteredProducts,
     searchTerm,
-    handleSearchSubmit,
-    lineaOptions,
-    grupoOptions,
-    selectedLinea,
-    selectedGrupo,
-    handleLineaChange,
-    handleGrupoChange,
+    handleSearchSubmit: setSearchTerm,
+    categoriaOptions,
+    subcategoriaOptions,
+    subSubcategoriaOptions,
+    selectedCategoria,
+    selectedSubcategoria,
+    selectedSubSubcategoria,
+    handleCategoriaChange,
+    handleSubcategoriaChange,
+    handleSubSubcategoriaChange,
     resetFilters,
   };
 };
 
 export default useFilteredProducts;
+
+
+
